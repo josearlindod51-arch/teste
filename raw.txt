@@ -23,7 +23,7 @@ folder = Instance.new("Folder")
 folder.Name = "s" .. tostring(math.random(100000, 999999))
 folder:SetAttribute("SAE_NEW_SESSION", true)
 local tbl
-tbl = { Name = "S2r Hub", Version = "0.1.0", Stage = "core", PlaceId = 107778070777162 }
+tbl = { Name = "Violet Hub", Version = "0.1.0", Stage = "core", PlaceId = 107778070777162 }
 
 do
 end
@@ -15263,7 +15263,7 @@ end)
 		PESAN = "-",
 	}
 
-	steal.WH.PENGIRIM = "S2r Hub"
+	steal.WH.PENGIRIM = "Violet Hub"
 	steal.WH.LOGO = ""
 	steal.WH.FLAG_V2 = 32768
 	steal.WH.JEDA = 0.6
@@ -15730,7 +15730,7 @@ do
 	end
 
 	local function fn33()
-		return ("-# S2r Hub · Steal An Egg · <t:%d:F>"):format(os.time())
+		return ("-# Violet Hub · Steal An Egg · <t:%d:F>"):format(os.time())
 	end
 
 	steal.WH.PSetor = function(arg)
@@ -15739,7 +15739,7 @@ do
 		local v5 = steal.WH.AsetThumb(hero.ikon)
 		local v6 = steal.WH.AvatarThumb()
 		local flag2 = not arg.manual and fn19("TagEveryone", false) == true
-		local str2 = "# S2r Hub\n**" .. localPlayer.Name .. "** · Steal An Egg"
+		local str2 = "# Violet Hub\n**" .. localPlayer.Name .. "** · Steal An Egg"
 
 		if arg.manual then
 			str2 ..= "\n-# Manual webhook preview"
@@ -15841,7 +15841,7 @@ Area · **%s**%s]]):format(hero.nama, hero.rarity, hero.berat, steal.Duit(hero.l
 	steal.WH.PPutus = function(arg)
 		local v4 = steal.WH.AsetThumb(steal.WH.LOGO)
 		local v5 = steal.WH.AvatarThumb()
-		local str2 = "# S2r Hub\n**" .. localPlayer.Name .. "** · Steal An Egg"
+		local str2 = "# Violet Hub\n**" .. localPlayer.Name .. "** · Steal An Egg"
 		local tbl2 = { fn23("@everyone"), fn24() }
 		tbl2[#tbl2 + 1] = v5 and fn26(str2, v5, localPlayer.Name .. " avatar") or fn23(str2)
 		tbl2[#tbl2 + 1] = fn24()
@@ -20722,9 +20722,9 @@ do
 		local LogoNRL
 
 		if tbl.UIX and tbl.UIX.Icon then
-			LogoNRL = tbl.UIX.Icon("LogoNRL") or "rbxassetid://124947058155926"
+			LogoNRL = tbl.UIX.Icon("LogoNRL") or "rbxassetid://88714738774451"
 		else
-			LogoNRL = "rbxassetid://124947058155926"
+			LogoNRL = "rbxassetid://88714738774451"
 			decal.Texture = LogoNRL
 			decal.Parent = part
 			steal.LOGO.pad = part
@@ -28758,7 +28758,7 @@ uix.LIB_CACHE = tbl.FS.Root .. "/BlackUILib.lua"
 -- The source library creates GUI objects while it loads, so patch its palette
 -- BEFORE executing it. Editing lib.Theme afterwards would not recolor objects
 -- that were already created.
-uix.BRAND = "S2r Hub"
+uix.BRAND = "Violet Hub"
 uix.INTRO = "gg.s2rhub by khay"
 uix.CREDITS = "Own by Zen and Khay"
 uix.DESCRIPTION = "Zen own this, Khay own this"
@@ -28865,7 +28865,7 @@ uix.ShowLoading = function()
         local title = create("TextLabel", {
             Name = "Title", Position = UDim2.new(0, 96, 0, 31),
             Size = UDim2.new(1, -113, 0, 33), BackgroundTransparency = 1,
-            Text = "S2r Hub", Font = Enum.Font.GothamBold,
+            Text = "Violet Hub", Font = Enum.Font.GothamBold,
             TextSize = 25, TextColor3 = white,
             TextXAlignment = Enum.TextXAlignment.Left,
         }, card)
@@ -28936,7 +28936,7 @@ uix.ShowLoading = function()
         create("UICorner", {CornerRadius = UDim.new(1, 0)}, fill)
         create("TextLabel", {Name = "LoadingStatus", Position = UDim2.new(0, 26, 0, 377),
             Size = UDim2.new(1, -52, 0, 20), BackgroundTransparency = 1,
-            Text = "Loading S2r Hub...", Font = Enum.Font.GothamMedium,
+            Text = "Loading Violet Hub...", Font = Enum.Font.GothamMedium,
             TextSize = 11, TextColor3 = muted,
             TextXAlignment = Enum.TextXAlignment.Center}, card)
         local tween = game:GetService("TweenService")
@@ -28957,7 +28957,7 @@ uix.HideLoading = function()
         local card = gui:FindFirstChild("Backdrop") and gui.Backdrop:FindFirstChild("CreditsCard")
         if card then
             local label = card:FindFirstChild("LoadingStatus")
-            if label then label.Text = "S2r Hub is ready" end
+            if label then label.Text = "Violet Hub is ready" end
         end
         task.wait(0.22)
         gui:Destroy()
@@ -28993,7 +28993,7 @@ uix.PatchLibrarySource = function(src)
     src = src:gsub('new%("ImageLabel", { Parent = AnnounceTopBar, Size = UDim2.fromOffset%(20, 20%), BackgroundTransparency = 1, Image = Icons.Logo, ImageColor3 = Theme.Text, LayoutOrder = 1 }%)',
         'new("TextLabel", { Parent = AnnounceTopBar, Size = UDim2.fromOffset(24, 24), BackgroundColor3 = Theme.AccentDim, Font = FONT_BOLD, Text = "S2", TextSize = 13, TextColor3 = Theme.Accent, LayoutOrder = 1 }, { corner(6), stroke(Theme.Accent, 1) })', 1)
     -- Remove the old brand logo. A custom violet S2 monogram is drawn below.
-    src = src:gsub('Logo%s*=%s*"rbxassetid://124947058155926"', 'Logo = ""')
+    src = src:gsub('Logo%s*=%s*"rbxassetid://88714738774451"', 'Logo = ""')
     -- Recolor initial GUI construction rather than merely swapping the theme table later.
     local paletteCount
     src, paletteCount = src:gsub("local Theme%s*=%s*%b{}", function()
