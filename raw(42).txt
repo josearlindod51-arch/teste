@@ -31523,12 +31523,11 @@ end
 -- ============================================================
 -- ADAPTACAO VIOLET HUB
 -- 1. Espera o runtime ser criado
--- 2. Destroi a GUI do Sena
+-- 2. Destroi TUDO que o Sena criou (GUI + botao + pastas)
 -- 3. Desativa todas as funcoes
 -- 4. Retorna a tabela pro Violet Hub
 -- ============================================================
 
--- Parte 1: espera o runtime, destroi a GUI, desativa tudo
 task.spawn(function()
     -- espera o runtime ser criado (ate 60s)
     local deadline = os.clock() + 60
@@ -31537,42 +31536,56 @@ task.spawn(function()
         task.wait(0.5)
     end
 
-    if not genv.__SenaV4EggRuntime then return end
-
     -- espera mais 3s pra GUI terminar de carregar
     task.wait(3)
 
-    -- destroi a GUI do Sena (so a do Sena, nao as outras)
+    -- destroi TUDO que o Sena criou
     local pg = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
     local alvos = { pg }
     pcall(function() table.insert(alvos, game:GetService("CoreGui")) end)
+
     for _, lugar in ipairs(alvos) do
         if lugar then
             for _, obj in ipairs(lugar:GetChildren()) do
-                if obj:IsA("ScreenGui") then
-                    local temAba = false
+                local nome = tostring(obj.Name):lower()
+                local destruir = false
+
+                -- 1) Nome tem "sena", "sae", "toggle", "hub"
+                if nome:find("sena") or nome:find("sae") or nome:find("toggle") or nome:find("hub") then
+                    destruir = true
+                end
+
+                -- 2) Tem abas do Sena dentro
+                if not destruir and obj:IsA("ScreenGui") then
                     for _, desc in ipairs(obj:GetDescendants()) do
                         if desc:IsA("TextLabel") or desc:IsA("TextButton") then
                             local txt = tostring(desc.Text):lower()
-                            if txt:find("admin abuse") or txt:find("auto steal") or txt:find("steal players") or txt:find("dr scramble") or txt:find("butterfly bloom") then
-                                temAba = true
+                            if txt:find("admin abuse") or txt:find("auto steal") or txt:find("steal players") or txt:find("dr scramble") or txt:find("butterfly bloom") or txt:find("sena") then
+                                destruir = true
                                 break
                             end
                         end
                     end
-                    if temAba then
-                        pcall(function() obj:Destroy() end)
-                    end
+                end
+
+                if destruir then
+                    pcall(function() obj:Destroy() end)
                 end
             end
         end
     end
 
-    -- desativa o roubo
-    local rt = genv.__SenaV4EggRuntime
-    pcall(function() rt:setEnabled(false) end)
+    -- destroi pastas do Sena no workspace (se existirem)
+    pcall(function()
+        for _, obj in ipairs(workspace:GetChildren()) do
+            local nome = tostring(obj.Name):lower()
+            if nome:find("sena") or nome:find("sae") then
+                pcall(function() obj:Destroy() end)
+            end
+        end
+    end)
 
-    -- desativa todos os booleanos do config
+    -- desativa tudo que o Sena ligou
     local cfg = genv.SenaV4Config
     if type(cfg) == "table" then
         for k, v in pairs(cfg) do
@@ -31610,43 +31623,30 @@ task.spawn(function()
         cfg.AutoStealCapture = false
     end
 
-    -- Anti-AFK
     pcall(function()
         local fn = genv.__SenaV4SetAntiAfkEnabled
         if type(fn) == "function" then fn(false) end
     end)
-
-    -- GodMode
     pcall(function()
         local gm = genv.__SenaV4GodMode
         if gm and type(gm.setEnabled) == "function" then gm:setEnabled(false) end
     end)
-
-    -- AntiGuard
     pcall(function()
         local ag = genv.__SenaV4AntiGuard
         if ag and type(ag.setEnabled) == "function" then ag:setEnabled(false) end
     end)
-
-    -- AntiHitGuard
     pcall(function()
         local ah = genv.__SenaV4AntiHitGuard
         if ah and type(ah.setEnabled) == "function" then ah:setEnabled(false) end
     end)
-
-    -- Treadmill idle
     pcall(function()
         local tm = genv.__SenaV4TreadmillManager
         if tm and type(tm.setIdleFarm) == "function" then tm:setIdleFarm(false) end
     end)
-
-    -- Player Steal
     pcall(function()
         local ps = genv.__SenaV4PlayerSteal
         if ps and type(ps.setEnabled) == "function" then ps:setEnabled(false) end
     end)
-
-    -- Movement extras
     pcall(function()
         local me = genv.__SenaV4MovementExtras
         if me then
@@ -31655,33 +31655,32 @@ task.spawn(function()
             pcall(me.setInfiniteJump, me, false)
         end
     end)
-
-    -- Reverte FPS boost (StartupBoost)
     pcall(function()
         local undo = genv.__SenaV4DecomBoostUndo
         if undo and type(undo.revert) == "function" then undo.revert() end
     end)
-
-    -- Restaura cap de FPS
     pcall(function()
         local fn = genv.__SenaV4SetCapFps
         if type(fn) == "function" then fn(60) end
     end)
-
-    -- Noclip
     pcall(function()
         local roaming = genv.__SenaV4Roaming
         if roaming and type(roaming.setNoclip) == "function" then roaming:setNoclip(false) end
     end)
-
-    -- Botting mode
     pcall(function()
         local roaming = genv.__SenaV4Roaming
         if roaming and type(roaming.setBottingMode) == "function" then roaming:setBottingMode(false) end
     end)
+
+    -- desliga o roubo
+    pcall(function()
+        if genv.__SenaV4EggRuntime then
+            genv.__SenaV4EggRuntime:setEnabled(false)
+        end
+    end)
 end)
 
--- Parte 2: retorna a tabela pro Violet Hub
+-- retorna a tabela pro Violet Hub
 local _vh = { ST = { Booted = true }, STEAL = { KUNCI = {} }, UIX = { FILTER = {} }, FLAG = { TeleportStealPremium = true } }
 
 _vh.STEAL.Claims = 0
